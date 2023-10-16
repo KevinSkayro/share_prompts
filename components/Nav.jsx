@@ -7,7 +7,7 @@ import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 
 const Nav = () => {
 
-    const isUserLoggedIn = useSession().data?.user;
+    const { data: session } = useSession();
     const [providers, setProviders] = useState(null);
     const [toggleDropdown, setToggleDropdown] = useState(false);
 
@@ -31,7 +31,7 @@ const Nav = () => {
             </Link>
             {/* Desktop Navigation */}
             <div className='sm:flex hidden'>
-                {isUserLoggedIn ? (
+                {session?.user ? (
                     <div className='flex gap-3 md:gap-5'>
                         <Link href='/create-prompt' className='black_btn'>
                             Create Post
@@ -42,7 +42,7 @@ const Nav = () => {
                         </button>
 
                         <Link href='/profile'>
-                            <Image src='/assets/images/logo.svg'
+                            <Image src={session?.user.image}
                             width={37}
                             height={37}
                             className='rounded-full'
@@ -67,62 +67,62 @@ const Nav = () => {
             </div>
             {/* Mobile Navigation */}
             <div className='sm:hidden flex relative'>
-                {isUserLoggedIn ? (
-                        <div className='flex'>
-                            <Image
-                                src='/assets/images/logo.svg'
-                                height={37}
-                                width={37}
-                                alt='profile'
-                                onClick={() => setToggleDropdown((prev) => !prev)}
-                            />
-                            {toggleDropdown && (
-                                <div className='dropdown'>
-                                    <Link
-                                        href='/profile'
-                                        className='dropdown_link'
-                                        onClick={() => setToggleDropdown(false)}
-                                    > 
-                                    My Profile
-                                    </Link>
-                                    <Link
-                                        href='/create-prompt'
-                                        className='dropdown_link'
-                                        onClick={() => setToggleDropdown(false)}
-                                        
-                                    > 
-                                    Create Prompt
-                                    </Link>
-                                    <button
-                                    type='button'
-                                    onClick={() => {
-                                        setToggleDropdown(false)
-                                        signOut()
-                                    }}
-                                    className='mt-5 w-full black_btn'
-                                    >
-                                        Sign Out
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    ) : (
+                {session?.user ? (
+                    <div className='flex'>
+                        <Image
+                            src={session?.user.image}
+                            height={37}
+                            width={37}
+                            alt='profile'
+                            onClick={() => setToggleDropdown((prev) => !prev)}
+                            className='rounded-full'
+                        />
+                        {toggleDropdown && (
+                            <div className='dropdown'>
+                                <Link
+                                    href='/profile'
+                                    className='dropdown_link'
+                                    onClick={() => setToggleDropdown(false)}
+                                > 
+                                My Profile
+                                </Link>
+                                <Link
+                                    href='/create-prompt'
+                                    className='dropdown_link'
+                                    onClick={() => setToggleDropdown(false)}
+                                    
+                                > 
+                                Create Prompt
+                                </Link>
+                                <button
+                                type='button'
+                                onClick={() => {
+                                    setToggleDropdown(false)
+                                    signOut()
+                                }}
+                                className='mt-5 w-full black_btn'
+                                >
+                                    Sign Out
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                ) : (
 
-                        <>
-                        {providers && Object.values(providers).map((provider) => (
-                        <button 
-                        type='button'
-                        key={provider.name}
-                        onClick={() => signIn(provider.id)}
-                        className='outline_btn'
-                        >
-                            Sign In
-                        </button>
-                        ))}
-                        </>
+                    <>
+                    {providers && Object.values(providers).map((provider) => (
+                    <button 
+                    type='button'
+                    key={provider.name}
+                    onClick={() => signIn(provider.id)}
+                    className='outline_btn'
+                    >
+                        Sign In
+                    </button>
+                    ))}
+                    </>
 
-                    )
-                }
+                )}
 
             </div>
 
