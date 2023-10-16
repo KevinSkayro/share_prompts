@@ -3,11 +3,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import  { useState, useEffect } from 'react';
 import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
-import { set } from 'mongoose';
+// import { set } from 'mongoose';
 
 const Nav = () => {
 
-    const isUserLoggedIn = true;
+    const isUserLoggedIn = useSession().data?.user;
     const [providers, setProviders] = useState(null);
     const [toggleDropdown, setToggleDropdown] = useState(false);
 
@@ -56,6 +56,7 @@ const Nav = () => {
                         type='button'
                         key={provider.name}
                         onClick={() => signIn(provider.id)}
+                        className='outline_btn'
                         >
                             Sign In
                         </button>
@@ -113,6 +114,7 @@ const Nav = () => {
                         type='button'
                         key={provider.name}
                         onClick={() => signIn(provider.id)}
+                        className='outline_btn'
                         >
                             Sign In
                         </button>
