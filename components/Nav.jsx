@@ -1,9 +1,8 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
-// import { set } from 'mongoose';
 
 const Nav = () => {
 
@@ -33,7 +32,7 @@ const Nav = () => {
             <div className='sm:flex hidden'>
                 {session?.user ? (
                     <div className='flex gap-3 md:gap-5'>
-                        <Link href='/create-prompt' className='black_btn'>
+                        <Link href='/createPrompt' className='black_btn'>
                             Create Post
                         </Link>
 
@@ -87,7 +86,7 @@ const Nav = () => {
                                 My Profile
                                 </Link>
                                 <Link
-                                    href='/create-prompt'
+                                    href='/createPrompt'
                                     className='dropdown_link'
                                     onClick={() => setToggleDropdown(false)}
                                     
