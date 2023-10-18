@@ -24,6 +24,7 @@ const Nav = () => {
                 <Image src='/assets/images/logo.svg'
                 width={30}
                 height={30}
+                alt='logo'
                 className='objext-contain'
                 />
                 <p className='logo_text'>Share Prompts</p>
@@ -44,6 +45,7 @@ const Nav = () => {
                             <Image src={session?.user.image}
                             width={37}
                             height={37}
+                            alt='profile picture'
                             className='rounded-full'
                             />
                         </Link>
@@ -72,7 +74,7 @@ const Nav = () => {
                             src={session?.user.image}
                             height={37}
                             width={37}
-                            alt='profile'
+                            alt='profile picture'
                             onClick={() => setToggleDropdown((prev) => !prev)}
                             className='rounded-full'
                         />
