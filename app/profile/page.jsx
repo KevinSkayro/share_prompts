@@ -9,24 +9,21 @@ const MyProfile = () => {
     const { data: session } = useSession();
 
     const [prompts, setPrompts] = useState([]);
-    console.log(session?.user.id)
     useEffect(() => {
         const fetchPrompts = async () => {
             const response = await fetch(`/api/users/${session?.user.id}/prompts`);
             const data = await response.json();
-            console.log(data);
             setPrompts(data);
-            console.log(prompts)
         }
          if (session?.user.id) fetchPrompts();
     }, [session?.user.id]);
 
     const handleEdit = () => {
-
+        console.log('edit')
     }
 
     const handleDelete = async () => {
-
+        console.log('delete')
     }
 
   return (
