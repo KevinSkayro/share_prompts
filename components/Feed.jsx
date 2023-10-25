@@ -21,37 +21,47 @@ const Feed = () => {
     const [searchText, setSearchText] = useState('');
     const [prompts, setPrompts] = useState([]);
     const handleSearchChange = (e) => {
-
+        // Handle search input change here
     }
 
     const fetchPrompts = async () => {
-        const response = await fetch('/api/prompt');
-        const data = await response.json();
-        setPrompts(data);
+        try {
+            const response = await fetch('/api/prompt');
+            const data = await response.json();
+            setPrompts(data);
+        } catch (error) {
+            // Handle fetch error
+            console.log(error);
+        }
     };
 
     useEffect(() => {
         fetchPrompts();
     }, []);
     
-  return (
-    <section className='feed'>
-        <form className='relative w-full flex-center'>
-            <input className='search_input peer' 
-                type="text"
-                placeholder='Search for tag or username'
-                value={searchText}
-                onChange={handleSearchChange} 
-                required
-            />
-        </form>
+    return (
+        <section className='feed'>
+            <form className='relative w-full flex-center'>
+                <input
+                    className='search_input peer' 
+                    type="text"
+                    placeholder='Search for tag or username'
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    required
+                />
+            </form>
 
-        <PromptCardList
-            data={prompts}
-            handleTagClick={() => {}}
-        />
-    </section>
-  )
+            {prompts.length > 0 ? (
+                <PromptCardList
+                    data={prompts}
+                    handleTagClick={() => {}}
+                />
+            ) : (
+                <div>Loading or no data available.</div>
+            )}
+        </section>
+    );
 }
 
-export default Feed
+export default Feed;
