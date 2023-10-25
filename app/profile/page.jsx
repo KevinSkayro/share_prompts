@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 
 import Profile from '@components/Profile';
 const MyProfile = () => {
+    const router = useRouter();
     const { data: session } = useSession();
 
     const [prompts, setPrompts] = useState([]);
@@ -18,11 +19,11 @@ const MyProfile = () => {
          if (session?.user.id) fetchPrompts();
     }, [session?.user.id]);
 
-    const handleEdit = () => {
-        console.log('edit')
+    const handleEdit = (prompt) => {
+        router.push(`/updatePrompt?id=${prompt._id}`);
     }
 
-    const handleDelete = async () => {
+    const handleDelete = async (prompt) => {
         console.log('delete')
     }
 
