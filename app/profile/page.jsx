@@ -9,6 +9,11 @@ const MyProfile = () => {
     const router = useRouter();
     const { data: session } = useSession();
 
+    //if not logged in redirect to homepage
+    useEffect(() => {
+        if (!session) router.push('/');
+    }, [session]);
+
     const [prompts, setPrompts] = useState([]);
     useEffect(() => {
         const fetchPrompts = async () => {

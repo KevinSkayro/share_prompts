@@ -1,14 +1,20 @@
 'use client';
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+
 
 import Form from '@components/Form';
 
 const CreatePrompt = () => {
     const router = useRouter();
     const { data: session } = useSession();
+
+    //if not logged in redirect to homepage
+    useEffect(() => {
+        if (!session) router.push('/');
+    }, [session]);
 
     const [submitting, setSubmitting] = useState(false);
     const [post, setPost] = useState({

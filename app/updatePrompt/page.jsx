@@ -1,13 +1,19 @@
 'use client';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-
+import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import Form from '@components/Form';
 
 const EditPrompt = () => {
     const router = useRouter();
+    const { data: session } = useSession();
+
+    //if not logged in redirect to homepage
+    useEffect(() => {
+        if (!session) router.push('/');
+    }, [session]);
 
 
     const [submitting, setSubmitting] = useState(false);
