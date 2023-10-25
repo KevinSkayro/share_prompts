@@ -4,10 +4,9 @@ import { useState, useEffect } from 'react';
 import PromptCard from '@components/PromptCard';
 
 const PromptCardList = ({data, handleTagClick}) => {
-    console.log(data)
     return (
         <div className='mt-16 prompt_layout'>
-            {data.map((prompt) => (
+            {data && data.map((prompt) => (
                 <PromptCard 
                     key={prompt._id}
                     post={prompt}
@@ -29,7 +28,6 @@ const Feed = () => {
         const fetchPrompts = async () => {
             const response = await fetch('/api/prompt');
             const data = await response.json();
-            console.log(data);
             setPrompts(data);
         }
         fetchPrompts();
