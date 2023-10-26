@@ -8,8 +8,8 @@ export const GET = async (req) => {
         return new Response(JSON.stringify(prompts), {
             status: 200,
             headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+                'age': '0',
+                'Cache-Control': 'public, max-age=0, must-revalidate',
             },
         });
     } catch (error) {
