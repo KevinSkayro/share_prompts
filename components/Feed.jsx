@@ -1,10 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
 import PromptCard from '@components/PromptCard';
+import Image from 'next/image';
 const PromptCardList = ({data, handleTagClick}) => {
     return (
         <div className='mt-16 prompt_layout'>
-            {data && data.map((prompt) => (
+            { data.map((prompt) => (
                 <PromptCard 
                     key={prompt._id}
                     post={prompt}
@@ -12,38 +13,97 @@ const PromptCardList = ({data, handleTagClick}) => {
                 />
             ))}
         </div>
-    )
-}
+    );
+};
 const Feed = () => {
-    const [searchText, setSearchText] = useState('');
-    const [prompts, setPrompts] = useState([]);
-    const handleSearchChange = (e) => {
-    }
+    const [allPrompts, setAllPrompts] = useState([]);
+  
+    // Search states
+    const [searchText, setSearchText] = useState("");
+    const [searchTimeout, setSearchTimeout] = useState(null);
+    const [searchedResults, setSearchedResults] = useState([]);
+  
     const fetchPrompts = async () => {
-        const response = await fetch('/api/prompt');
-        const data = await response.json();
-        setPrompts(data);
+      const response = await fetch("/api/prompt");
+      const data = await response.json();
+  
+      setAllPrompts(data);
     };
+  
     useEffect(() => {
-        fetchPrompts();
+      fetchPrompts();
     }, []);
-    
-  return (
-    <section className='feed'>
-        <form className='relative w-full flex-center'>
-            <input className='search_input peer' 
-                type="text"
-                placeholder='Search for tag or username'
-                value={searchText}
-                onChange={handleSearchChange} 
-                required
-            />
-        </form>
-        <PromptCardList
-            data={prompts}
-            handleTagClick={() => {}}
-        />
-    </section>
-  )
-}
-export default Feed
+  
+    const filterPrompts = (searchtext) => {
+      const regex = new RegExp(searchtext, "i"); // 'i' for case-insensitive search
+      return allPrompts.filter(
+        (item) =>
+          regex.test(item.creator.username) ||
+          regex.test(item.tag) ||
+          regex.test(item.prompt)
+      );
+    };
+  
+    const handleSearchChange = (e) => {
+      clearTimeout(searchTimeout);
+      setSearchText(e.target.value);
+  
+      // debounce method
+      setSearchTimeout(
+        setTimeout(() => {
+          const searchResult = filterPrompts(e.target.value);
+          setSearchedResults(searchResult);
+        }, 500)
+      );
+    };
+  
+    const handleTagClick = (tagName) => {
+      setSearchText(tagName);
+  
+      const searchResult = filterPrompts(tagName);
+      setSearchedResults(searchResult);
+    };
+  
+    return (
+        <section className='feed'>
+            <form className='relative w-full flex-center'>
+                <input
+                    type='text'
+                    placeholder='Search for a tag or a username'
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    required
+                    className='search_input peer'
+                />
+            </form>
+
+
+            {/* if data is not available yet, show loading */}
+            {!allPrompts.length && (
+                <div className='flex-center mt-16'>
+                    <Image
+                        src='/assets/icons/loader.svg'
+                        width={50}
+                        height={50}
+                        alt='loading icon'
+                    />
+                </div>
+            )}
+
+            {/* show searched text or all results */}
+            {searchText ? (
+                <PromptCardList
+                    data={searchedResults}
+                    handleTagClick={handleTagClick}
+                />
+            ) : (
+                <PromptCardList 
+                    data={allPrompts}
+                    handleTagClick={handleTagClick} 
+                />
+            )}
+        </section>
+    );
+  };
+  
+  export default Feed;
