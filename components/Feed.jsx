@@ -25,10 +25,9 @@ const Feed = () => {
     const [searchLoading, setSearchLoading] = useState(false);
   
     const fetchPrompts = async () => {
-        const response = await fetch('/api/prompt', {
-            cache: 'no-store',
-            next: { revalidate: 10 },
-        });
+        //every minute
+        const time = new Date().getTime().toString().slice(0, -5);
+        const response = await fetch(`/api/prompt/request/${time}`);
         const data = await response.json();
     
         setAllPrompts(data);
