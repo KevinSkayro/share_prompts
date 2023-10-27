@@ -6,13 +6,7 @@ export const GET = async (req) => {
         await connectToDatabase();
         const prompts = await Prompt.find({}).populate('creator');
 
-        return new Response(JSON.stringify(prompts), {
-            status: 200,
-            headers: {
-                'age': '0',
-                'Cache-Control': 'public, max-age=0, must-revalidate',
-            },
-        });
+        return new Response(JSON.stringify(prompts), {status: 200});
     } catch (error) {
         return new Response(JSON.stringify(error), { status: 500 });
     }

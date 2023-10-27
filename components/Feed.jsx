@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import PromptCard from '@components/PromptCard';
 import Image from 'next/image';
-import { set } from 'mongoose';
 const PromptCardList = ({data, handleTagClick}) => {
     return (
         <div className='mt-16 prompt_layout'>
@@ -26,8 +25,9 @@ const Feed = () => {
     const [searchLoading, setSearchLoading] = useState(false);
   
     const fetchPrompts = async () => {
-        const response = await fetch(`/api/prompt`, {
-            cache: "no-store",
+        const response = await fetch('/api/prompt', {
+            cache: 'no-store',
+            next: { revalidate: 10 },
         });
         const data = await response.json();
     
@@ -39,7 +39,7 @@ const Feed = () => {
     }, []);
   
     const filterPrompts = (searchtext) => {
-        const regex = new RegExp(searchtext, "i"); // 'i' for case-insensitive search
+        const regex = new RegExp(searchtext, 'i'); // 'i' for case-insensitive search
         return allPrompts.filter(
             (item) =>
             regex.test(item.creator.username) ||
@@ -52,7 +52,7 @@ const Feed = () => {
         clearTimeout(searchTimeout);
         setSearchText(e.target.value);
         setSearchLoading(true);
-        // debounce method
+ 
         setSearchTimeout(
             setTimeout(() => {
             const searchResult = filterPrompts(e.target.value);
@@ -82,7 +82,6 @@ const Feed = () => {
                 />
             </form>
 
-
             {/* if data is not available yet, show loading */}
             {(!allPrompts.length || searchLoading) && (
                 <div className='flex-center mt-16'>
@@ -110,5 +109,4 @@ const Feed = () => {
         </section>
     );
 };
-  
 export default Feed;
