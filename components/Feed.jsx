@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import PromptCard from '@components/PromptCard';
 import Image from 'next/image';
+import { set } from 'mongoose';
 const PromptCardList = ({data, handleTagClick}) => {
     return (
         <div className='mt-16 prompt_layout'>
@@ -22,6 +23,7 @@ const Feed = () => {
     const [searchText, setSearchText] = useState("");
     const [searchTimeout, setSearchTimeout] = useState(null);
     const [searchedResults, setSearchedResults] = useState([]);
+    const [searchLoading, setSearchLoading] = useState(false);
   
     const fetchPrompts = async () => {
         const response = await fetch(`/api/prompt`, {
@@ -49,13 +51,14 @@ const Feed = () => {
     const handleSearchChange = (e) => {
         clearTimeout(searchTimeout);
         setSearchText(e.target.value);
-    
+        setSearchLoading(true);
         // debounce method
         setSearchTimeout(
             setTimeout(() => {
             const searchResult = filterPrompts(e.target.value);
             setSearchedResults(searchResult);
-            }, 500)
+            setSearchLoading(false);
+            }, 100)
         );
     };
   
@@ -81,7 +84,7 @@ const Feed = () => {
 
 
             {/* if data is not available yet, show loading */}
-            {!allPrompts.length && (
+            {(!allPrompts.length || searchLoading) && (
                 <div className='flex-center mt-16'>
                     <Image
                         src='/assets/icons/loader.svg'
@@ -93,7 +96,7 @@ const Feed = () => {
             )}
 
             {/* show searched text or all results */}
-            {searchText ? (
+            {!searchLoading && (searchText ? (
                 <PromptCardList
                     data={searchedResults}
                     handleTagClick={handleTagClick}
@@ -103,7 +106,7 @@ const Feed = () => {
                     data={allPrompts}
                     handleTagClick={handleTagClick} 
                 />
-            )}
+            ))}
         </section>
     );
 };
