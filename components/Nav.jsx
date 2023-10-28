@@ -21,10 +21,10 @@ const Nav = () => {
     return (
         <nav className='flex-between w-full mb-16 pt-3'>
             <Link href='/' className='flex gap-2 flex-center'>
-                <Image src='/assets/images/logo.svg'
-                width={30}
-                height={30}
-                alt='logo'
+                <Image src='/assets/images/page-logo.svg'
+                width={50}
+                height={50}
+                alt='Canvas Student icon by Icons8 - https://icons8.com/icon/6b0HTqWsJO1d/canvas-student'
                 className='objext-contain'
                 />
                 <p className='logo_text'>Share Prompts</p>
