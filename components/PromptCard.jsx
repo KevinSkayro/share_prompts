@@ -4,8 +4,11 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const PromptCard = ({ post,  handleTagClick, handleEdit, handleDelete }) => {
+
+    const router = useRouter();
 
     const { data: session } = useSession();
     const pathName = usePathname();
@@ -16,6 +19,9 @@ const PromptCard = ({ post,  handleTagClick, handleEdit, handleDelete }) => {
         setCopied(post.prompt);
         navigator.clipboard.writeText(post.prompt);
         setTimeout(() => setCopied('') , 3000);
+    }
+    const handleChat = () => {
+        router.push(`/chat?prompt=${post._id}`);
     }
     return (
         <div className='prompt_card'>
@@ -48,12 +54,24 @@ const PromptCard = ({ post,  handleTagClick, handleEdit, handleDelete }) => {
                             ? '/assets/icons/tick.svg'   
                             : '/assets/icons/copy.svg'
                         }
-                        width={12}
-                        height={12}
+                        width={16}
+                        height={16}
+                        alt='copy icon'
+                    />
+                </div>
+                <div className='copy_btn'
+                    onClick={handleChat}
+                >
+                    <Image
+                        src={'/assets/icons/chatgpt.svg'}
+                        width={16}
+                        height={16}
                         alt='copy icon'
                     />
                 </div>
             </div>
+
+            <a target="_blank" href="https://icons8.com/icon/6b0HTqWsJO1d/canvas-student">Canvas Student</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
             <p className='my-4 text-satoshi text-sm text-gray-700'>
                 {post.prompt}
             </p>
