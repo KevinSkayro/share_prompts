@@ -71,7 +71,6 @@ const PromptCard = ({ post,  handleTagClick, handleEdit, handleDelete }) => {
                 </div>
             </div>
 
-            <a target="_blank" href="https://icons8.com/icon/6b0HTqWsJO1d/canvas-student">Canvas Student</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
             <p className='my-4 text-satoshi text-sm text-gray-700'>
                 {post.prompt}
             </p>
