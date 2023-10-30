@@ -21,7 +21,7 @@ const PromptCard = ({ post,  handleTagClick, handleEdit, handleDelete }) => {
         setTimeout(() => setCopied('') , 3000);
     }
     const handleChat = () => {
-        router.push(`/chat?prompt=${post._id}`);
+        router.push(`/chat?promptId=${post._id}`);
     }
     return (
         <div className='prompt_card'>
