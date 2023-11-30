@@ -15,6 +15,7 @@ const MyProfile = () => {
     }, [session]);
 
     const [prompts, setPrompts] = useState([]);
+    
     useEffect(() => {
         const fetchPrompts = async () => {
             const response = await fetch(`/api/users/${session?.user.id}/prompts`);
